@@ -11,15 +11,32 @@ axios(url).then(response => {
     const html = response.data;
     const $ = cheerio.load(html);
     const divOffers = $('#offers > div');
-    
+
+     
     divOffers.each(function(){
-         offer.name = $(this).find('div.bottom_title > h2 > a').text();
-         //offer.oldPrice = $(this).find('.jogador-posicao').text();
-         offer.lastprice = $(this).find('div.info > div.price > span:nth-child(2)').text();
-         offer.link = 'http://www.promobit.com.br' +$(this).find('a').attr('href');
-         offerlist.push(offer);
+        
+        const name =  $(this).find('div.bottom_title > h2 > a');        
+        if (name != null)
+            offer.name = name.text();
 
+        const lastprice = $(this).find('div.info > div.price > span:nth-child(2)');
+        if (name != lastprice)
+            offer.lastprice = lastprice.text(); 
 
-         console.log(offer)});
+        const link = $(this).find('a').attr('href');
+        if (link != null)
+            offer.link = url + link;
+
+        
+        if (offer.link === '' || offer.name === '' || offer.link === '')
+            console.log('erro na obtencao de dados');
+        else
+        {
+            offerlist.push(offer);
+            console.log(offer)    
+        }
+        //offer.oldPrice = $(this).find('.jogador-posicao').text();
+      
+        });
 
 }).catch(console.error);
