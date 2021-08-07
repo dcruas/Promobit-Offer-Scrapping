@@ -1,10 +1,14 @@
-module.exports = class Offer
-{
-    constructor (name, oldprice, lastprice, link)
-    {
-        this.name = name;
-        this.oldprice = oldprice;
-        this.lastprice = lastprice;
-        this.link = link;
-    }
-}
+const mongoose = require('mongoose');
+
+const offerSchema = mongoose.Schema({
+    name:String,
+    oldprice:String,
+    lastprice:String,
+    link:String,
+    time : { type : Date, default: Date.now }
+})
+
+
+const Offer = mongoose.model('Offer', offerSchema);
+module.exports = Offer;
+
