@@ -5,8 +5,9 @@ const offerSchema = mongoose.Schema({
     oldprice:String,
     lastprice:String,
     link:String,
-    time : { type : Date, default: Date.now }
-})
+    time : { type : Date, default: Date.now },
+    servernotified : {type: Array, default: []}
+});
 
 
 const Offer = mongoose.model('Offer', offerSchema);

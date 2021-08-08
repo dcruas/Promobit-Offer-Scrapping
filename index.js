@@ -1,7 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const Offer = require('./Models/Offer');
-const Product = require('./Models/Product');
 const mongoose = require('mongoose');
 const EventEmitter = require('events');
 require('dotenv').config();
@@ -28,7 +27,7 @@ emitter.on('StartScrapping', async function(){
     const divOffers = $('#offers > div');
 
    
-    divOffers.each( async function(){
+    divOffers.each(async function(){
       
       const name =  $(this).find('div.bottom_title > h2 > a');        
       const lastprice = $(this).find('div.info > div.price > span:nth-child(2)');
@@ -42,7 +41,8 @@ emitter.on('StartScrapping', async function(){
               name:name.text(),
               oldprice:'',
               lastprice: lastprice.text(),
-              link: url + link
+              link: url + link,
+              notified: false
           });
           
           Offer.findOne({ 'name': offer.name, 'link': offer.link }, function (err, storedOffer) {
@@ -70,8 +70,14 @@ emitter.on('StartScrapping', async function(){
 }).catch(console.error);
 });
 
+setInterval (async function () {
+  emitter.emit('StartScrapping');
+},20000);
 
- emitter.emit('StartScrapping');
+
+
+
+ 
 
 
 
